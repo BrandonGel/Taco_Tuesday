@@ -9,7 +9,8 @@ env = gym.make("cap-v0")
 # Reset the environment and select the policies for each of the team
 observation = env.reset(
         map_size=20,
-        config_path='demo/base_settings.ini',
+        config_path='base_settings.ini',
+        # config_path='demo/base_settings.ini',
         policy_blue=policy.Defense(),
         policy_red=policy.Random()
     )
@@ -24,7 +25,7 @@ for n in range(num_match):
     rewards = []
     while not done:
         # Take a step and receive feedback
-        observation, reward, done, info = env.step()
+        observation, reward, done, info = env.step([1,1])
         rewards.append(reward)
 
         # Render and sleep (not needed for score analysis)

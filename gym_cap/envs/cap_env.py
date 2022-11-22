@@ -1151,18 +1151,18 @@ class Board(spaces.Space):
         self.dtype = np.dtype(dtype)
 
         if shape is None:
-            self.shape = (20, 20, NUM_CHANNEL)
+            self._shape = (20, 20, NUM_CHANNEL) #11/08/22 EDIT: self.shape -> self._shape
         else:
             assert shape[2] == NUM_CHANNEL
-            self.shape = tuple(shape)
-        super(Board, self).__init__(self.shape, self.dtype)
+            self._shape = tuple(shape) #11/08/22 EDIT: self.shape -> self._shape
+        super(Board, self).__init__(self._shape, self.dtype)
 
     def __repr__(self):
-        return "Board" + str(self.shape)
+        return "Board" + str(self._shape)
 
     def sample(self):
         map_obj = [NUM_BLUE, NUM_BLUE_UAV, NUM_RED, NUM_RED_UAV, NUM_GRAY]
         state, _, _ = gen_random_map('map',
-                self.shape[0], rand_zones=False, map_obj=map_obj)
+                self._shape[0], rand_zones=False, map_obj=map_obj)
         return state
 

@@ -59,7 +59,7 @@ def _roll(n):
         iter_time = time.time()
         for steps in range(int(args.time_step)):
             # feedback from environment
-            _, _, game_finish, _ = env.step()
+            _, _, game_finish, _ = env.step(1)
 
             if game_finish:
                 break 

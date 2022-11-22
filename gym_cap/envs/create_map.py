@@ -87,8 +87,8 @@ class Map:
             zone = np.ones(dim, dtype=int)  # 1 for blue, -1 for red, 0 for obstacle
             static_map = np.zeros(dim, dtype=int)
             if rand_zones:
-                sx, sy = np_random.randint(min(dim)//2, 4*min(dim)//5, [2])
-                lx, ly = np_random.randint(0, min(dim) - max(sx,sy)-1, [2])
+                sx, sy = np_random.randint(min(dim)//2, 4*min(dim)//5, [2]) #11/08/22 EDIT: np_random.randint -> np_random.integers
+                lx, ly = np_random.randint(0, min(dim) - max(sx,sy)-1, [2]) #11/08/22 EDIT: np_random.randint -> np_random.integers
                 zone[lx:lx+sx, ly:ly+sy] = -1
                 static_map[lx:lx+sx, ly:ly+sy] = TEAM2_BACKGROUND
             else:
@@ -96,6 +96,7 @@ class Map:
                 static_map[:,0:dim[1]//2] = TEAM2_BACKGROUND
                 #zone = np.rot90(zone)
             if 0.5 < np_random.rand():
+            # if 0.5 < np_random.integers(1): #11/08/22 EDIT: np_random.rand() -> np_random.integers
                 zone = -zone  # Reverse
                 static_map = -static_map+1  # TODO: not a safe method to reverse static_map
 
@@ -104,7 +105,9 @@ class Map:
             num_obst = int(np.sqrt(min(dim)))
             for i in range(num_obst):
                 lx, ly = np_random.randint(0, min(dim), [2])
-                sx, sy = np_random.randint(0, min(dim)//5, [2]) + 1
+                sx, sy = np_random.randint(0, min(dim) // 5,[2]) + 1
+                # lx, ly = np_random.integers(0, min(dim), [2]) #11/08/22 EDIT: np_random.randint -> np_random.integers
+                # sx, sy = np_random.integers(0, min(dim)//5, [2]) + 1 #11/08/22 EDIT: np_random.randint -> np_random.integers
                 zone[lx-sx:lx+sx, ly-sy:ly+sy] = 0
                 obst[lx-sx:lx+sx, ly-sy:ly+sy] = REPRESENT[OBSTACLE]
                 static_map[lx-sx:lx+sx, ly-sy:ly+sy] = OBSTACLE
