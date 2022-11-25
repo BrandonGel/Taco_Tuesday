@@ -7,3 +7,4 @@ from gym_cap.heuristic.defense import Defense
 from gym_cap.heuristic.astar_flag import AStar
 from gym_cap.heuristic.spiral import Spiral
 from gym_cap.heuristic.fighter import Fighter
+from gym_cap.heuristic.maple import Maple

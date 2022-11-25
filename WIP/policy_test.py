@@ -17,7 +17,7 @@ import gym_cap.heuristic as policy
 description = "Evaluate two different policy."
 parser = argparse.ArgumentParser(description=description)
 parser.add_argument('--episode', type=int, help='number of episodes to run', default=100)
-parser.add_argument('--blue_policy', type=str, help='blue policy', default='Fighter')
+parser.add_argument('--blue_policy', type=str, help='blue policy', default='Maple')
 parser.add_argument('--red_policy', type=str, help='blue policy', default='Random')
 parser.add_argument('--config_path', type=str, help='configuration path', default='base_settings.ini')
 parser.add_argument('--map_size', type=int, help='size of the board', default=20)
