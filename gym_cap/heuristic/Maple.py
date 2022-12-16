@@ -60,6 +60,7 @@ class Maple(Policy):
         """
 
         action_out = []
+        # print("MAPLE")
         for idx, agent in enumerate(agent_list):
             if not agent.isAlive or not self.found_route[idx]:
                 action_out.append(0)
@@ -70,7 +71,7 @@ class Maple(Policy):
             if self.agent_route[idx][self.agent_steps[idx]] != cur_loc:
                 self.agent_steps[idx] += 1
             cur_step = self.agent_steps[idx]
-            if cur_step >= len(self.agent_route[idx]):
+            if cur_step >= len(self.agent_route[idx])-1:
                 action_out.append(0)
                 continue
             new_loc = self.agent_route[idx][cur_step+1]
@@ -87,6 +88,20 @@ class Maple(Policy):
 
         return action_out
 
+    def search_nearest_enemy(self, agent, obs):
+        """
+        function for finding the nearest code
+        """
+        dist = []        
+        end = np.argwhere(obs[:,:,CHANNEL[TEAM2_UGV]]==REPRESENT[TEAM2_UGV] or obs[:,:,CHANNEL[TEAM2_UGV2]]==REPRESENT[TEAM2_UGV2])
+        if len(end) != 0:
+            for fx, fy in end:
+                x, y = agent.get_loc()
+                dist.append((fx-x)**2 + (fy-y)**2)
+            min_dist = np.argmin(dist)
+            return tuple(end[min_dist])
 
+        else:
+            return agent.get_loc()
 
 

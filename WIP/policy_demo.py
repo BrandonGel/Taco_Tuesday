@@ -71,7 +71,7 @@ for n in range(num_match):
 
     # Statistics
     rscore.append(sum(rewards))
-    duration = time.time() - start_time 
+    duration = time.time() - start_time
     print("Time: %.2f s, Score: %.2f" % (duration, rscore[-1]))
 
 print("Average Time: %.2f s, Average Score: %.2f"

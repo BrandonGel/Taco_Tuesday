@@ -17,21 +17,24 @@ import gym_cap.heuristic as policy
 description = "Evaluate two different policy."
 parser = argparse.ArgumentParser(description=description)
 parser.add_argument('--episode', type=int, help='number of episodes to run', default=100)
-parser.add_argument('--blue_policy', type=str, help='blue policy', default='Maple')
-parser.add_argument('--red_policy', type=str, help='blue policy', default='Random')
+# parser.add_argument('--blue_policy', type=str, help='blue policy', default='AStar') #AStar policy for Blue
+# parser.add_argument('--blue_policy', type=str, help='blue policy', default='Defense') #Defense policy for Blue
+# parser.add_argument('--blue_policy', type=str, help='blue policy', default='Patrol') #Patrol policy for Blue
+parser.add_argument('--blue_policy', type=str, help='blue policy', default='Defense') #Patrol policy for Blue
+parser.add_argument('--red_policy', type=str, help='red policy', default='Invariant')
 parser.add_argument('--config_path', type=str, help='configuration path', default='base_settings.ini')
 parser.add_argument('--map_size', type=int, help='size of the board', default=20)
-parser.add_argument('--time_step', type=int, help='maximum time step', default=300)
+parser.add_argument('--time_step', type=int, help='maximum time step', default=100)
 parser.add_argument('--fair_map', help='run on fair map', action='store_true')
 parser.add_argument('--cores', type=int, help='number of cores (-1 to use all)', default=1)
 args = parser.parse_args()
 
-# TODO: Make several other test board for evaluation
-fair_maps = ['test_maps/board{}.txt'.format(i) for i in range(1,5)]
+
+fair_maps = ['test_maps/board{}.txt'.format(i) for i in range(1,2)]
 
 # initialize the environment
 
-# TODO: add configuration file or add path to the program argument
+# TODO: Primi
 def _roll(n):
     num_episode = int(args.episode)//cores
     blue_policy = getattr(policy, args.blue_policy)()
@@ -59,7 +62,8 @@ def _roll(n):
         iter_time = time.time()
         for steps in range(int(args.time_step)):
             # feedback from environment
-            _, _, game_finish, _ = env.step(steps)
+            action = env.action_space.sample()
+            observation, reward, game_finish, info  = env.step(action)
 
             if game_finish:
                 break
