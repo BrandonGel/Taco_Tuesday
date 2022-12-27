@@ -1,0 +1,50 @@
+device: cuda
+batch_size: 128 
+
+# Dataset Path
+datasets:
+  dataset_type: gnn
+  # train_path: "/nethome/sye40/PrisonerEscape/datasets/gnn_map_0_run_300_eps_0_norm.npz"
+  # test_path: "/nethome/sye40/PrisonerEscape/datasets/gnn_map_0_run_100_eps_0_norm.npz"
+  train_path: "/nethome/sye40/PrisonerEscape/datasets/gnn_map_0_run_300_eps_0.1_norm.npz"
+  test_path: "/nethome/sye40/PrisonerEscape/datasets/gnn_map_0_run_100_eps_0.1_norm.npz"
+  input_obs: blue
+  seq_len: 16
+  num_workers: 4
+
+  # Multistep into the future
+  num_heads: 1
+  step_length: 0
+
+  # Single step into the future
+  future_step: 0
+
+  # # Multistep into the future
+  # multi_head: False
+  # num_heads: 1
+  # step_length: 0
+  # include_current: False
+
+  # # Options for different node features
+  # one_hot_agents: False
+  # detected_location: False
+  # timestep: False
+
+# Model Setup
+model:
+  model_type: 'gnn'
+  load_pth: null
+  input_dim: 254
+  encoder_type: 'lstm'
+  hidden_dim: 8
+  gnn_hidden_dim: 8
+  decoder_type: 'mixture'
+  number_gaussians: 4
+
+# Training Setup
+training:
+  log_dir: "logs/gnn/filtering"  
+  seed: 102
+  learning_rate: 0.001
+  epochs: 200
+  l2_lambda: 0

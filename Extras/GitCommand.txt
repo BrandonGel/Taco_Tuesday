@@ -1,0 +1,17 @@
+cd D:\Research\Taco_Tuesday
+git clone --bare https://github.com/raide-project/ctf_public
+cd ctf_public.git
+git push --mirror https://github.com/BrandonGel/Taco_Tuesday.git
+cd..
+git clone https://github.com/BrandonGel/Taco_Tuesday
+git commit -am ""
+git remote set-url origin https://github.com/BrandonGel/Taco_Tuesday
+git remote -v
+git push -u origin Release
+
+
+Token 10/21/22-11/22/22
+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
+
+Conda Environment
+conda create --name TacoTuesdayEnv python=3.8

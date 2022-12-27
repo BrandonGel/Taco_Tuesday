@@ -1,0 +1,71 @@
+log_dir: "logs/bc_train"
+seed: 104
+
+environment:
+  random_cameras: False
+  place_mountains_bool: True
+  camera_range_factor: 1.0
+  spawn_mode: 'corner'
+  observation_step_type: "Fugitive" # Fugitive
+  observation_terrain_feature: False
+  random_hideout_locations: False
+  spawn_range: 350
+  helicopter_battery_life: 200
+  helicopter_recharge_time: 40
+  num_search_parties: 5
+  camera_file_path: "simulator/camera_locations/original_and_more.txt"
+  terrain_map: 'simulator/tl_coverage/maps_0.2/1.npy'
+  stopping_condition: True
+  known_hideout_locations: [[323, 1623]]
+  unknown_hideout_locations: [[376, 1190], [909, 510]]
+
+
+dataset:
+  collect: True
+  repeat_stops: 200
+  buffer_save_type: Blue # Fugitive, Blue, GroundTruth
+  path: "buffers/prediction_2_24.pkl"
+  buffer_size: 50000
+
+# heuristic: rrt vs avoid vs direct vs mountain
+# direct doesn't avoid cameras
+# avoid is full heuristic
+# heuristic: "mountain" # mountain means we collect more information around the mountain
+heuristic: "avoid"
+# rl_path: "/star-data/prisoner-policies/hier/trained-workers/manager/ppo.zip"
+show: False
+
+bc:
+  algo_type: "bc" # bc for behavioral cloning vs dagger 
+  train: True
+  model_type: "A2C"
+  epochs: 5000
+  batch_size: 64
+  lr: 0.001
+  net_arch: [128, 128]
+  video_step: 20
+
+
+# log_dir: "logs/bc_train"
+
+# environment: 
+#   type: "PrisonerBlueEnv" # PrisonerGoalEnv vs PrisonerEnv vs PrisonerGroundTruthEnv vs PrisonerBlueEnv
+#   spawn_mode: "uniform" #normal means same location, uniform means random sample
+#   random_cameras: False
+#   goal: 1
+
+# dataset:
+#   collect: False
+#   path: "buffers/direct_mountain_uniform_heuristic_blue_1.pkl"
+#   buffer_size: 500000
+
+# # heuristic: "direct" # rrt vs avoid vs direct vs mountain
+# heuristic: "mountain" # mountain means we collect more information around the mountain
+# show: False
+
+# bc:
+#   train: True
+#   model_type: "A2C"
+#   epochs: 100000
+#   batch_size: 5000
+#   lr: 0.001

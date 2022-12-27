@@ -1,0 +1,73 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import os
+
+def plot_comparison_figure(data, title, save_path):
+    x = np.arange(0, 65, 5)
+
+    plt.figure()
+    plt.title(title)
+
+    # set y axis min to 0
+    # plt.ylim(bottom=0)
+    # plt.ylim(bottom=0, top=3.0)
+    # plt.set_ylim([0])
+
+    #axes labels
+    plt.xlabel('Timesteps into the future')
+    plt.ylabel('Log-Likelihood')
+
+    for d in data:
+        plt.plot(x, np.array(d[1]),  marker="o", label=d[0])
+
+    # add legend
+    plt.legend()
+    plt.savefig(save_path)
+    plt.close()
+
+def plot_random_start_locations():
+    vector_baseline = [1.3309119939804077,1.3088207244873047,1.1928791999816895,1.225862979888916,1.1562904119491577,1.1232645511627197,1.1015689373016357,1.0565687417984009,0.9991317391395569,0.9840184450149536,0.9169155359268188,0.8953359723091125,0.9580086469650269]
+    homo_gnn= [1.9562957286834717,1.9160703420639038,1.873477578163147,1.8301235437393188,1.7867183685302734,1.7438498735427856,1.7010595798492432,1.6567476987838745,1.612598180770874,1.5702964067459106,1.5280169248580933,1.486244797706604,1.4456710815429688]
+    hetero_gnn = [1.9284851551055908,1.9129254817962646,1.8925676345825195,1.8684788942337036,1.8423988819122314,1.8147928714752197,1.7841072082519531,1.7532302141189575,1.7198495864868164,1.6849257946014404,1.648349404335022,1.610788106918335,1.5721408128738403]
+
+    data = [("RNN Baseline", vector_baseline), ("Homogeneous GNN", homo_gnn), ("Heterogeneous GNN", hetero_gnn)]
+    plot_comparison_figure(data, "Random Start Location (camera net)", "evaluate/figs/random_starts.png")
+
+def plot_random_start_locations_no_net():
+    vector_baseline = []
+    homo_gnn = [1.386843204498291,1.336910367012024,1.290075421333313,1.244745135307312,1.2019184827804565,1.1608742475509644,1.1220636367797852,1.084957480430603,1.0492630004882812,1.0157369375228882,0.9844171404838562,0.953009307384491,0.9218055605888367]
+    hetero_gnn = []
+
+    data = [("RNN Baseline", vector_baseline), ("Homogeneous GNN"), homo_gnn]
+    plot_comparison_figure(data, "Random Start Location (no camera net)", "evaluate/figs/random_starts_no_net.png")
+
+
+def plot_RRT_compare_with_heuristic():
+    fixed_cams_baseline_rrt = [1.9939, 1.9786, 1.9571, 1.9271, 1.9154, 1.8682, 1.8374, 1.8598, 1.6652,
+            1.6351, 1.6128, 1.5804, 1.5540]
+    fixed_cams_gnn_rrt = [2.5963282585144043,2.575249671936035,2.4855716228485107,2.4199600219726562,2.507922410964966,2.4250338077545166,2.403203010559082,2.3793065547943115,2.355410575866699,2.3326101303100586,2.309864044189453,2.286611795425415,2.262263536453247]
+
+    fixed_cams_baseline_heuristic = [2.2598, 2.3444, 2.3117, 2.2975, 2.2830, 2.2622, 2.2437, 2.2181, 2.2014,
+        2.1741, 2.1695, 2.1393, 2.0812]
+    
+    fixed_cams_gnn_heuristic = [2.5263988971710205,2.516058921813965,2.516115427017212,2.5208775997161865,2.522369623184204,2.5242748260498047,2.518357276916504,2.5008060932159424,2.489193916320801,2.4823760986328125,2.469841480255127,2.3836238384246826,2.375403881072998]
+
+    particle_filter = [1.5912216176429002, 1.4506082924099086, 1.354078310711413, 1.26455701028462,
+                   1.1745304166415595, 1.0833315460960808, 0.949393156866075, 0.8576705371667752,
+                   0.7186138462809187, 0.6095632447809848, 0.48322872834307373, 0.36718507421709734,
+                   0.2461767405587872]
+
+    pf_rrt = [-3.4731810698816346, -3.7817059115555396, -3.9801599264247574, -4.293531998309871, -5.552689318770659, -6.82628508897337, -7.280548483105227, -7.749506290757518, -7.620393059020226,
+-7.474444669291649, -7.48932098939193, -7.518469191196128, -8.361951565376097]
+
+    data = [("Heuristic Vector", fixed_cams_baseline_heuristic), 
+    ("RRT* Vector", fixed_cams_baseline_rrt), 
+    ("Heuristic GNN", fixed_cams_gnn_heuristic), 
+    ("RRT* GNN", fixed_cams_gnn_rrt), 
+    # ("Particle Filter", particle_filter),
+    ("Particle Filter RRT*", pf_rrt)
+    ]
+    plot_comparison_figure(data, "Results on RRT* compared with Heuristic", "evaluate/figs/rrt_star.png")
+
+# plot_random_start_locations()
+plot_RRT_compare_with_heuristic()

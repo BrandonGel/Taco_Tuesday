@@ -1,0 +1,31 @@
+device: cuda
+batch_size: 128 
+
+# Dataset Path
+datasets:
+  train_path: "/nethome/sye40/PrisonerClean/datasets/eps_0/map_0_run_300_eps_0_normalized.npz"
+  test_path: "/nethome/sye40/PrisonerClean/datasets/eps_0/map_0_run_100_eps_0_normalized.npz"
+  input_obs: blue
+  seq_len: 16
+  step_length: 5
+  num_heads: 12
+  current_step: True
+
+# Model Setup
+model:
+  load_pth: null
+  model_type: 'connected'
+  hidden_connected: False
+  input_dim: 254
+  encoder_type: 'lstm'
+  hidden_dim: 64
+  decoder_type: 'mixture'
+  number_gaussians: 4
+
+# Training Setup
+training:
+  log_dir: "logs/connected"  
+  seed: 102
+  learning_rate: 0.0001
+  epochs: 300
+  l2_lambda: 0.05

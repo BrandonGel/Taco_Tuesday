@@ -1,0 +1,44 @@
+device: cuda
+batch_size: 128
+
+# Dataset Path
+datasets:
+  dataset_type: vector
+  train_path: "predict_loc/buffer/map_0_run_300_heuristic_eps_0.1.npz"
+  test_path: "predict_loc/buffer/map_0_run_100_heuristic_eps_0.1.npz"
+  view: blue # only for blue view
+  seq_len: 16 # 128
+  num_workers: 4
+
+  # Multistep into the future
+  multi_head: True
+  num_heads: 12
+  step_length: 5
+  include_current: True
+
+  # Options for different node features
+  one_hot_agents: True
+  detected_location: False
+  timestep: False
+
+# Model Setup
+model:
+  model_type: 'vector'
+  load_pth: null
+  input_dim: 333 # 254
+  encoder_type: 'lstm'
+  hidden_dim: 128
+  gnn_hidden_dim: 8
+  decoder_type: 'mixture'
+  number_gaussians: 4
+
+# Training Setup
+training:
+  scheduler: null
+  ml_flow_experiment: 2
+  log_dir: "logs/vector/baseline"  
+  seed: 103
+  learning_rate: 0.0001
+  epochs: 200 # 200
+  l2_lambda: 0.15
+  weight_decay: 0.0001

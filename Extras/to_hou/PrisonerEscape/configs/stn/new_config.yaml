@@ -1,0 +1,47 @@
+device: cpu
+batch_size: 128
+
+# Dataset Path
+datasets:
+  dataset_type: gnn
+#  train_path: "datasets/train/gnn_map_0_run_2_eps_0.1_Normal"
+#  test_path: "datasets/test/gnn_map_0_run_2_eps_0.1_Normal"
+  train_path: "datasets/train_same_new/gnn_map_0_run_2_eps_0.1_norm_random_cameras"
+  test_path: "datasets/train_same_new/gnn_map_0_run_2_eps_0.1_norm_random_cameras"
+
+  view: blue # only for blue view
+  seq_len: 16
+  num_workers: 4
+
+  # Multistep into the future
+  multi_head: True
+  num_heads: 12
+  step_length: 5
+  include_current: True
+
+  # Options for different node features
+  one_hot_agents: True
+  detected_location: True
+  timestep: True
+
+# Model Setup
+model:
+  model_type: 'temp_gcn'
+  load_pth: null
+  input_dim: null
+  encoder_type: null
+  hidden_dim: 8
+  gnn_hidden_dim: 16
+  decoder_type: 'mixture'
+  number_gaussians: 4
+
+# Training Setup
+training:
+  weight_decay: 0.0001
+  scheduler: null
+  log_dir: "logs/gnn/tgcn"
+  seed: 103
+  learning_rate: 0.001
+  epochs: 130
+  l2_lambda: 0
+  ml_flow_experiment: 3

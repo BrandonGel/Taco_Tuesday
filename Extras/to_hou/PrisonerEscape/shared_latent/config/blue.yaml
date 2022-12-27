@@ -1,0 +1,37 @@
+seed: 102
+
+# Sequence type
+outer_seq: 12
+inner_seq: 5
+
+# Decoder type
+decoder: SingleStd # Single vs Mixture
+reconstruction: null
+output_dim: 2
+num_gaussians: 1
+
+# dreamer model settings
+obs_type: "blue" # red is currently 113, blue is 254
+in_dim: 254
+learning_rate: 0.0003 
+epochs: 100
+hidden_dim: 64
+embed_dim: 32
+stoch_dim: 32
+deter_dim: 64
+loss_kl_weight: 2
+stoch_discrete: 0
+hidden_dim: 500       
+gru_layers: 1
+gru_type: 'gru'
+layer_norm: False
+
+# Training details
+batch_size: 64
+seq_len: 16
+kl_balancing: 0.8
+learning_rate: 0.001
+min_decoder_loss: -2
+train_dataset_path: "/nethome/sye40/PrisonerEscape/shared_latent/dataset/map_0_run_300_eps_0.npz"
+test_dataset_path: "/nethome/sye40/PrisonerEscape/shared_latent/dataset/map_0_run_100_eps_0.npz"
+

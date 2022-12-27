@@ -1,0 +1,14 @@
+Document to track where datasets were created and which branch was used to create them.
+
+Dataset name: random_start_locations/map
+Git hash: c63b95f66869a9b86944b0750d07e4c767c2725a
+Description: Random start locations with fixed cams 
+    edited the RRT* to run more iterations than normal if goal is not found
+    edited the uniform spawning so that is doesn't spawn within the mountain range in RRT*
+
+Dataset name: random_start_locations_no_net
+Git hash: 372ae3a96f2988400ace8beb25be6e46fa49e2b2
+Description: 
+    Random start location with fixed cameras and no camera net around fugitive
+    Used Heuristic settings of 155 outer range around the mountain
+

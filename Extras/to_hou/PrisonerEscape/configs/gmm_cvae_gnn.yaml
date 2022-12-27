@@ -1,0 +1,53 @@
+device: cpu
+batch_size: 128
+
+# Dataset Path
+datasets:
+  dataset_type: gnn
+  train_path: "/nethome/sye40/PrisonerEscape/datasets/train/gnn_map_0_run_400_RRT"
+  test_path: "/nethome/sye40/PrisonerEscape/datasets/test/gnn_map_0_run_100_RRT"
+  # train_path: "/home/sean/PrisonerEscape/datasets/train/gnn_map_0_run_10_eps_0.1_random_cameras"
+  # test_path: "/home/sean/PrisonerEscape/datasets/train/gnn_map_0_run_10_eps_0.1_random_cameras"
+
+
+  view: blue # only for blue view
+  seq_len: 16
+  num_workers: 4
+
+  # Multistep into the future
+  multi_head: True
+  num_heads: 12
+  step_length: 5
+  include_current: True
+
+  # Options for different node features
+  one_hot_agents: True
+  detected_location: True
+  timestep: True
+
+  get_start_location: False
+
+# Model Setup
+model:
+  model_type: 'gmm_cvae_gnn'
+  load_pth: null
+  input_dim: 254
+  encoder_hidden_dim: 16
+  z_dim: 8
+  future_hidden_dim: 16
+  decoder_type: 'mixture'
+  number_gaussians: 5
+  gmm_bool: True
+
+# Training Setup
+training:
+  save_epoch: False
+  weight_decay: 0.0001
+  scheduler: null
+  # log_dir: "/star-data/sye40/logs/gmm_cvae_gnn"  
+  log_dir: logs/gmm_cvae_gnn
+  seed: 104
+  learning_rate: 0.001
+  epochs: 130
+  l2_lambda: 0
+  ml_flow_experiment: 0

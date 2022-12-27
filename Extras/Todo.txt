@@ -1,0 +1,10 @@
+behavior cloning on a Maple adversary
+how well the adversary is preforming
+Maple basic adversary preforming better when raid and reward than the base heuristic 
+Regenerate it, adversary is not getting the reward w/ graph base
+Win/Lose ratio, Draw from time limit
+episode where not killing all the enemy or not capturing the flag
+Time Complexity?
+
+pyglet
+moviepy

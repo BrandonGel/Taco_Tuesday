@@ -1,0 +1,50 @@
+device: cuda
+batch_size: 128
+
+# Dataset Path
+datasets:
+  dataset_type: gnn
+  # train_path: "datasets/train/gnn_map_0_run_300_eps_0.1_Normal"
+  # test_path: "datasets/test/gnn_map_0_run_100_eps_0.1_Normal"
+  train_path: datasets/train/gnn_map_0_run_400_RRT
+  test_path: datasets/test/gnn_map_0_run_100_RRT
+  # train_path: datasets/train/subset_eps_0.1_Normal
+  # test_path: datasets/train/subset_eps_0.1_Normal
+  view: blue # only for blue view
+  seq_len: 16
+
+  # Multistep into the future
+  multi_head: True
+  num_heads: 12
+  step_length: 5
+  include_current: True
+
+  # Options for different node features
+  one_hot_agents: True
+  detected_location: True
+  timestep: True
+
+  get_start_location: False
+
+# Model Setup
+model:
+  model_type: 'hybrid_gnn'
+  load_pth: null
+  input_dim: 254
+  encoder_type: 'lstm'
+  hidden_dim: 8
+  gnn_hidden_dim: 16
+  decoder_type: 'mixture'
+  number_gaussians: 4
+
+# Training Setup
+training:
+  save_epoch: False
+  weight_decay: 0.0001
+  scheduler: null
+  log_dir: "logs/gc_lstm_gnn" 
+  seed: 105
+  learning_rate: 0.001
+  epochs: 130
+  l2_lambda: 0
+  ml_flow_experiment: 11
