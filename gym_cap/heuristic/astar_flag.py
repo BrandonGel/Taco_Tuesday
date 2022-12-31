@@ -70,7 +70,7 @@ class AStar(Policy):
             if self.agent_route[idx][self.agent_steps[idx]] != cur_loc:
                 self.agent_steps[idx] += 1
             cur_step = self.agent_steps[idx]
-            if cur_step >= len(self.agent_route[idx]):
+            if cur_step >= len(self.agent_route[idx]) -1: #12/27/2022: Add -1 to satisfy for loop
                 action_out.append(0)
                 continue
             new_loc = self.agent_route[idx][cur_step+1]

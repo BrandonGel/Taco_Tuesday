@@ -46,6 +46,7 @@ def _roll(n):
             policy_red = red_policy,
             config_path=args.config_path
         )
+
     stat_win = np.array([0, 0, 0])
     stat_flag = np.array([0, 0, 0]) # Win mode
     stat_eliminated = np.array([0, 0, 0]) # Win mode
@@ -60,9 +61,10 @@ def _roll(n):
             env.reset()
 
         iter_time = time.time()
+        observation = env
         for steps in range(int(args.time_step)):
             # feedback from environment
-            action = env.action_space.sample()
+            action = blue_policy.gen_action(env.get_team_blue, observation)
             observation, reward, game_finish, info  = env.step(action)
 
             if game_finish:

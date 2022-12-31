@@ -33,9 +33,11 @@ class Policy:
         Define:
             agent_list (list): list of all friendly units.
             free_map (np.array): 2d map of static environment (optional).
+            obs (np.array): a list of 2d map of explored spaces, explored areas, flag position, explored obstruction, UGV position, UAV position (optional).
         
         """
         self.free_map = None
+        self.obs = None
         self.agent_list = None
 
         self._random_transition_safe = True 
@@ -107,6 +109,30 @@ class Policy:
         else:
             return 0  # Only when start==neighbor
 
+    def move_toward2(self, start, target, obs):
+        """
+        Output action to move from start to neighbor.
+        It is crude method to move in certain direction.
+        Due to the grid-environment, it does not move diagonally.
+
+        Args:
+            start (tuple): coordinate of staring location
+            target (tuple): coordinate of targeting location
+
+        Return:
+            int : corresponding action to move towards the target
+        """
+        if target[1] - start[1] > 0 and not obs[start[0],start[1]+1,3]: # move right
+            return 3
+        elif target[1] - start[1] < 0 and not obs[start[0],start[1]-1,3]: # move left
+            return 1
+        elif target[0] - start[0] > 0 and not obs[start[0]+1,start[1],3]: # move down
+            return 2
+        elif target[0] - start[0] < 0 and not obs[start[0]-1,start[1]+1,3]: # move up
+            return 4
+        else:
+            return 0  # Only when start==neighbor
+
     def next_loc(self, position, move):
         """
         Return next coordinate
@@ -157,7 +183,7 @@ class Policy:
             return ((start[0]-goal[0])**2 + (start[1]-goal[1])**2) ** 0.5
         return abs(start[0]-goal[0]) + abs(start[1]-goal[1])
 
-    def get_flag_loc(self, team, friendly_flag=False):
+    def get_flag_loc(self, team, friendly_flag=False): #12/30/2022: Update to have friendly_flag
         """
         Return the location of enemy flag
         If friendly_flag is given True, it returns aliance flag.
@@ -170,10 +196,41 @@ class Policy:
 
         """
         if team == const.TEAM1_BACKGROUND:
-            flag_id = const.TEAM2_FLAG
+            if friendly_flag:
+                flag_id = const.TEAM1_FLAG
+            else:
+                flag_id = const.TEAM2_FLAG
         elif team == const.TEAM2_BACKGROUND:
-            flag_id = const.TEAM1_FLAG
+            if friendly_flag:
+                flag_id = const.TEAM2_FLAG
+            else:
+                flag_id = const.TEAM1_FLAG
         loc = np.argwhere(self.free_map==flag_id)
+        if len(loc) == 0:
+            loc = None
+        else:
+            loc = loc[0]
+
+        return loc
+
+    def get_flag_loc_partobs(self,friendly_flag=False): #12/31/2022: Update to be partiall observed
+        """
+        Return the location of enemy flag
+        If friendly_flag is given True, it returns aliance flag.
+
+        Args:
+            team (int): team id (0 for blue, 1 for red)
+
+        Return:
+            coord (tuple): Coordinate of the flag
+
+        """
+        flag_map = self.obs[:,:,2]
+        if friendly_flag:
+            flag_id = 1
+        else:
+            flag_id = -1
+        loc = np.argwhere(self.flag_map==flag_id)
         if len(loc) == 0:
             loc = None
         else:
