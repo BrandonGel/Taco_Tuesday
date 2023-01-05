@@ -109,7 +109,7 @@ class Policy:
         else:
             return 0  # Only when start==neighbor
 
-    def move_toward2(self, start, target, obs):
+    def move_toward2(self, start, target, obs): #12/30/2022 Update to not hit obstruction
         """
         Output action to move from start to neighbor.
         It is crude method to move in certain direction.
@@ -122,16 +122,27 @@ class Policy:
         Return:
             int : corresponding action to move towards the target
         """
-        if target[1] - start[1] > 0 and not obs[start[0],start[1]+1,3]: # move right
+        obstacle_map = self.obs[:, :, 3]
+        if target[1] - start[1] > 0 and not any(obstacle_map[start[0], start[1]:target[1]]):  # move right
             return 3
-        elif target[1] - start[1] < 0 and not obs[start[0],start[1]-1,3]: # move left
+        elif target[1] - start[1] < 0 and not any(obstacle_map[start[0], target[1]:start[1]]):  # move left
             return 1
-        elif target[0] - start[0] > 0 and not obs[start[0]+1,start[1],3]: # move down
+        elif target[0] - start[0] > 0 and not any(obstacle_map[start[0]:target[0], start[1]]):  # move down
             return 2
-        elif target[0] - start[0] < 0 and not obs[start[0]-1,start[1]+1,3]: # move up
+        elif target[0] - start[0] < 0 and not any(obstacle_map[target[0]:start[0], start[1]]):  # move up
             return 4
         else:
             return 0  # Only when start==neighbor
+        # if target[1] - start[1] > 0 and not any(obs[start[0],start[1]:target[1],3]): # move right
+        #     return 3
+        # elif target[1] - start[1] < 0 and not any(obs[start[0],target[1]:start[1],3]): # move left
+        #     return 1
+        # elif target[0] - start[0] > 0 and not any(obs[start[0]:target[0],start[1],3]): # move down
+        #     return 2
+        # elif target[0] - start[0] < 0 and not any(obs[target[0]:start[0],start[1]+1,3]): # move up
+        #     return 4
+        # else:
+        #     return 0  # Only when start==neighbor
 
     def next_loc(self, position, move):
         """
@@ -183,6 +194,35 @@ class Policy:
             return ((start[0]-goal[0])**2 + (start[1]-goal[1])**2) ** 0.5
         return abs(start[0]-goal[0]) + abs(start[1]-goal[1])
 
+
+    def mindistance(self, loc):
+        """
+        Minimum Distance between one point and rest
+        Use L1 norm distance for grid world
+
+        Args:
+            loc (array)
+
+        return:
+            (int,int)
+        """
+        loc = np.array(loc)
+        explored_map = self.obs[:,:,0]
+        unexplored = np.argwhere(explored_map == 1)
+        if len(unexplored) == 0:
+            return None
+        dist = np.sum(np.abs(unexplored-loc), axis = 1)
+        idx = np.argwhere(dist == min(dist))
+        close_pt = tuple(unexplored[idx[0],:].flatten())
+
+        return close_pt
+
+
+
+
+
+
+
     def get_flag_loc(self, team, friendly_flag=False): #12/30/2022: Update to have friendly_flag
         """
         Return the location of enemy flag
@@ -230,7 +270,7 @@ class Policy:
             flag_id = 1
         else:
             flag_id = -1
-        loc = np.argwhere(self.flag_map==flag_id)
+        loc = np.argwhere(flag_map==flag_id)
         if len(loc) == 0:
             loc = None
         else:

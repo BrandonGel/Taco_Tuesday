@@ -68,15 +68,15 @@ class Invariant(Policy):
         # names = np.random.choice(['astar', 'patrol', 'def'], len(agent_list))
         # names = 30 * ['astar']
         # names = 30 * ['patrol']
-        names = 30 * ['def']
-        # names = 10*['astar', 'patrol', 'def']
+        # names = 30 * ['def']
+        names = 10*['astar', 'patrol', 'def']
         for i in range(len(agent_list)):
             self.agent_type.update({agent_list[i]: names[i]})
 
         ##Defense
         #12/31/22: Update defense to partial blue observation
-        self.flag_location = self.get_flag_loc(self.team, True)
-        # self.flag_location = None
+        # self.flag_location = self.get_flag_loc(self.team, True)
+        self.flag_location = None
         self.exploration = 0.1
         self.flag_code = const.TEAM1_FLAG if agent_list[0].team == const.TEAM1_BACKGROUND else const.TEAM2_FLAG
 
@@ -174,7 +174,7 @@ class Invariant(Policy):
         Returns:
             action_out (list): list of integers as actions selected for team.
         """
-        print(agent_list[0].team)
+        self.obs = observation
         action_out = []
         # print("INVARIANT")
         for idx, agent in enumerate(agent_list):
@@ -188,11 +188,18 @@ class Invariant(Policy):
             if self.agent_type[agent] == 'def':
                 # if map changes then reset the flag location
                 # search for a flag until finds it
-                if self.flag_location is None:
-                    self.flag_location = self.get_flag_loc_partobs( True)  # In case it is partial observation
+                # if self.flag_location is None:
+                self.flag_location = self.get_flag_loc_partobs( True)  # In case it is partial observation
 
                 if self.flag_location is None:  # Random Search
-                    action_out.append(self.random.randint(0, 5))
+
+                    cur_loc = agent.get_loc()
+                    new_loc = self.mindistance(cur_loc)
+                    if new_loc is None:
+                        action_out.append(self.random.randint(0, 5))
+                    else:
+                        action = self.move_toward2(cur_loc, new_loc, observation)
+                        action_out.append(action)
                 else:
                     # go to the flag to defend it
                     a = self.flag_approach(agent,observation)

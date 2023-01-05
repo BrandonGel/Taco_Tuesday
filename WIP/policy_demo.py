@@ -13,7 +13,7 @@ parser.add_argument('--episode', type=int, help='number of episodes to run', def
 # parser.add_argument('--blue_policy', type=str, help='blue policy', default='AStar') #AStar policy for Blue
 # parser.add_argument('--blue_policy', type=str, help='blue policy', default='Defense') #Defense policy for Blue
 # parser.add_argument('--blue_policy', type=str, help='blue policy', default='Patrol') #Patrol policy for Blue
-parser.add_argument('--blue_policy', type=str, help='blue policy', default='Invariant') #Patrol policy for Blue
+parser.add_argument('--blue_policy', type=str, help='blue policy', default='AStar') #Patrol policy for Blue
 parser.add_argument('--red_policy', type=str, help='red policy', default='Invariant')
 parser.add_argument('--config_path', type=str, help='configuration path', default='base_settings.ini')
 parser.add_argument('--map_size', type=int, help='size of the board', default=20)
@@ -34,6 +34,12 @@ observation = env.reset(
         policy_red=red_policy,
         config_path=args.config_path
     )
+
+agent_num = env.NUM_BLUE + env.NUM_BLUE_UAV
+hier_high_obs_dim_each = 3
+hier_high_obs_dim = agent_num * hier_high_obs_dim_each
+hier_low_obs_dim_each = 3
+hier_low_obs_dim = agent_num * hier_low_obs_dim_each
 
 num_match = 1
 render = True
